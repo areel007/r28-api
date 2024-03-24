@@ -9,9 +9,9 @@ const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const path_1 = __importDefault(require("path"));
-dotenv_1.default.config({ path: "./config.env" });
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
+dotenv_1.default.config({ path: "./config.env" });
 // Middlewares;
 if (process.env.NODE_ENV === "development") {
     app.use((0, morgan_1.default)("dev"));

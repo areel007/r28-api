@@ -5,10 +5,11 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import path from "path";
 
-dotenv.config({ path: "./config.env" });
-
 const app = express();
 app.use(cors());
+
+dotenv.config({ path: "./config.env" });
+
 // Middlewares;
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
