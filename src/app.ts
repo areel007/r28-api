@@ -5,10 +5,6 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import path from "path";
 
-const location = path.join(__dirname, "uploads");
-
-console.log(location);
-
 dotenv.config({ path: "./config.env" });
 
 const app = express();
@@ -17,7 +13,8 @@ app.use(cors());
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-app.use("/uploads", express.static(location));
+app.use("/uploads", express.static("uploads"));
+app.use(express.static(path.join(__dirname, "uploads")));
 
 app.use(express.json());
 
