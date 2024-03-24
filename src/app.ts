@@ -17,7 +17,7 @@ app.use(cors());
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-app.use(location, express.static("uploads"));
+app.use("/uploads", express.static(location));
 
 app.use(express.json());
 

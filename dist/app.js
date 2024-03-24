@@ -18,7 +18,7 @@ app.use((0, cors_1.default)());
 if (process.env.NODE_ENV === "development") {
     app.use((0, morgan_1.default)("dev"));
 }
-app.use(location, express_1.default.static("uploads"));
+app.use("/uploads", express_1.default.static(location));
 app.use(express_1.default.json());
 app.use(index_1.default);
 exports.default = app;
