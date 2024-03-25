@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "tsc && nodemon ./dist/server",
     "build": "tsc && copyfiles -u 1 src/uploads/**/*.* dist",
-    "start": "node ./dist/server.js"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
