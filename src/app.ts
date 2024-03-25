@@ -32,8 +32,8 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.use("/uploads/news-and-events/", express.static("uploads"));
-app.use(express.static(path.join(__dirname, "uploads")));
+// Serve static files from the 'uploads' directory
+app.use("/uploads", express.static("uploads"));
 
 app.use(express.json());
 

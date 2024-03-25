@@ -8,7 +8,7 @@ const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
 exports.storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "uploads/news-and-events/");
+        cb(null, "uploads/");
     },
     filename: function (req, file, cb) {
         let ext = path_1.default.extname(file.originalname);

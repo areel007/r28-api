@@ -8,7 +8,6 @@ const index_1 = __importDefault(require("./routes/index"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const path_1 = __importDefault(require("path"));
 const app = (0, express_1.default)();
 dotenv_1.default.config({ path: "./config.env" });
 // Configure CORS
@@ -31,8 +30,8 @@ app.use((0, cors_1.default)(corsOptions));
 if (process.env.NODE_ENV === "development") {
     app.use((0, morgan_1.default)("dev"));
 }
+// Serve static files from the 'uploads' directory
 app.use("/uploads", express_1.default.static("uploads"));
-app.use(express_1.default.static(path_1.default.join(__dirname, "uploads")));
 app.use(express_1.default.json());
 app.use(index_1.default);
 // Handle preflight requests
