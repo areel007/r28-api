@@ -7,6 +7,7 @@ interface UploadedFile {
   path: string;
 }
 
+// Add news and events
 export const addNewsAndEvents: RequestHandler = async (
   req: Request,
   res: Response

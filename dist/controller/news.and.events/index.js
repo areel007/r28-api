@@ -16,6 +16,7 @@ exports.deleteNewsAndEvents = exports.getNewsAndEvents = exports.getAllNewsAndEv
 const news_and_events_1 = __importDefault(require("../../models/news.and.events"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
+// Add news and events
 const addNewsAndEvents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let path = "";
     try {
