@@ -1,6 +1,7 @@
 import { Request, RequestHandler, Response } from "express";
 import NewsAndEvents from "../../models/news.and.events";
 import fs from "fs";
+import path from "path";
 
 interface UploadedFile {
   path: string;
@@ -96,14 +97,21 @@ export const deleteNewsAndEvents: RequestHandler = async (
     // Extract image URLs
     const imageUrls = newsAndEvents.newsImgUrl.split(",");
 
-    // Delete each image
+    // Delete each image associated with the post
     imageUrls.forEach(async (imageUrl: string) => {
-      fs.unlink(imageUrl.trim(), (err) => {
-        if (err && err.code !== "ENOENT") {
-          // Ignore file not found error
-          console.error("Error deleting file:", err);
+      try {
+        const imagePath = path.join(
+          __dirname,
+          "..",
+          "uploads",
+          imageUrl.trim()
+        );
+        if (fs.existsSync(imagePath)) {
+          await fs.promises.unlink(imagePath);
         }
-      });
+      } catch (err) {
+        console.error("Error deleting file:", err);
+      }
     });
 
     // Delete the news and events entry
