@@ -10,7 +10,12 @@ const app = express();
 dotenv.config({ path: "./config.env" });
 
 // Configure CORS
-const allowedOrigins = ["http://localhost:5174", "https://r28.ng"];
+const allowedOrigins = [
+  "http://localhost:5174",
+  "https://r28.ng",
+  "https://r28.e37digital.com/",
+  "http://r28.e37digital.com/",
+];
 
 const corsOptions: cors.CorsOptions = {
   origin: function (origin, callback) {
