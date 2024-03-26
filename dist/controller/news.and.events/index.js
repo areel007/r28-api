@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteNewsAndEvents = exports.getNewsAndEvents = exports.getAllNewsAndEvents = exports.addNewsAndEvents = void 0;
 const news_and_events_1 = __importDefault(require("../../models/news.and.events"));
 const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
 const addNewsAndEvents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let path = "";
     try {
@@ -73,43 +74,6 @@ const getNewsAndEvents = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.getNewsAndEvents = getNewsAndEvents;
-// export const deleteNewsAndEvents: RequestHandler = async (
-//   req: Request,
-//   res: Response
-// ) => {
-//   const { id } = req.params;
-//   try {
-//     const newsAndEvents = await NewsAndEvents.findById(id);
-//     if (!newsAndEvents) {
-//       return res.status(404).json({ message: "Resource not found" });
-//     }
-//     if (!newsAndEvents.newsImgUrl) {
-//       return res
-//         .status(400)
-//         .json({ message: "No images associated with this entry" });
-//     }
-//     // Extract image URLs
-//     const imageUrls = newsAndEvents.newsImgUrl.split(",");
-//     // Delete each image
-//     imageUrls.forEach(async (imageUrl: string) => {
-//       fs.unlink(imageUrl.trim(), (err) => {
-//         if (err && err.code !== "ENOENT") {
-//           // Ignore file not found error
-//           console.error("Error deleting file:", err);
-//         }
-//       });
-//     });
-//     // Delete the news and events entry
-//     await NewsAndEvents.findByIdAndDelete(id);
-//     res.status(200).json({
-//       message:
-//         "News and events successfully deleted along with associated images",
-//     });
-//   } catch (error) {
-//     console.error("Error deleting news and events:", error);
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// };
 const deleteNewsAndEvents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
@@ -125,17 +89,17 @@ const deleteNewsAndEvents = (req, res) => __awaiter(void 0, void 0, void 0, func
         // Extract image URLs
         const imageUrls = newsAndEvents.newsImgUrl.split(",");
         // Delete each image associated with the post
-        yield Promise.all(imageUrls.map((imageUrl) => __awaiter(void 0, void 0, void 0, function* () {
+        imageUrls.forEach((imageUrl) => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                // Check if the image exists before attempting to delete
-                if (fs_1.default.existsSync(imageUrl.trim())) {
-                    yield fs_1.default.promises.unlink(imageUrl.trim());
+                const imagePath = path_1.default.join(__dirname, "..", "uploads", imageUrl.trim());
+                if (fs_1.default.existsSync(imagePath)) {
+                    yield fs_1.default.promises.unlink(imagePath);
                 }
             }
             catch (err) {
                 console.error("Error deleting file:", err);
             }
-        })));
+        }));
         // Delete the news and events entry
         yield news_and_events_1.default.findByIdAndDelete(id);
         res.status(200).json({
