@@ -75,6 +75,50 @@ export const getNewsAndEvents: RequestHandler = async (
   }
 };
 
+// export const deleteNewsAndEvents: RequestHandler = async (
+//   req: Request,
+//   res: Response
+// ) => {
+//   const { id } = req.params;
+//   try {
+//     const newsAndEvents = await NewsAndEvents.findById(id);
+
+//     if (!newsAndEvents) {
+//       return res.status(404).json({ message: "Resource not found" });
+//     }
+
+//     if (!newsAndEvents.newsImgUrl) {
+//       return res
+//         .status(400)
+//         .json({ message: "No images associated with this entry" });
+//     }
+
+//     // Extract image URLs
+//     const imageUrls = newsAndEvents.newsImgUrl.split(",");
+
+//     // Delete each image
+//     imageUrls.forEach(async (imageUrl: string) => {
+//       fs.unlink(imageUrl.trim(), (err) => {
+//         if (err && err.code !== "ENOENT") {
+//           // Ignore file not found error
+//           console.error("Error deleting file:", err);
+//         }
+//       });
+//     });
+
+//     // Delete the news and events entry
+//     await NewsAndEvents.findByIdAndDelete(id);
+
+//     res.status(200).json({
+//       message:
+//         "News and events successfully deleted along with associated images",
+//     });
+//   } catch (error) {
+//     console.error("Error deleting news and events:", error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// };
+
 export const deleteNewsAndEvents: RequestHandler = async (
   req: Request,
   res: Response
@@ -96,15 +140,19 @@ export const deleteNewsAndEvents: RequestHandler = async (
     // Extract image URLs
     const imageUrls = newsAndEvents.newsImgUrl.split(",");
 
-    // Delete each image
-    imageUrls.forEach(async (imageUrl: string) => {
-      fs.unlink(imageUrl.trim(), (err) => {
-        if (err && err.code !== "ENOENT") {
-          // Ignore file not found error
+    // Delete each image associated with the post
+    await Promise.all(
+      imageUrls.map(async (imageUrl: string) => {
+        try {
+          // Check if the image exists before attempting to delete
+          if (fs.existsSync(imageUrl.trim())) {
+            await fs.promises.unlink(imageUrl.trim());
+          }
+        } catch (err) {
           console.error("Error deleting file:", err);
         }
-      });
-    });
+      })
+    );
 
     // Delete the news and events entry
     await NewsAndEvents.findByIdAndDelete(id);
