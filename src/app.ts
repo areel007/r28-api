@@ -10,11 +10,7 @@ const app = express();
 dotenv.config({ path: "./config.env" });
 
 // Configure CORS
-const allowedOrigins = [
-  "http://localhost:5174",
-  "https://r28.ng",
-  "http://r28.e37digital.com",
-];
+const allowedOrigins = ["http://localhost:5174", "https://r28.ng"];
 
 const corsOptions: cors.CorsOptions = {
   origin: function (origin, callback) {
@@ -36,8 +32,8 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-// Serve static files from the 'uploads' directory
 app.use("/uploads", express.static("uploads"));
+app.use(express.static(path.join(__dirname, "uploads")));
 
 app.use(express.json());
 
