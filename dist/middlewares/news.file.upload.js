@@ -9,7 +9,8 @@ const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 exports.storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
-        const uploadDir = "uploads/";
+        // const uploadDir = "../uploads/";
+        const uploadDir = path_1.default.join(__dirname + "/uploads/");
         fs_1.default.access(uploadDir, (err) => {
             if (err && err.code === "ENOENT") {
                 fs_1.default.mkdir(uploadDir, { recursive: true }, (mkdirErr) => {
