@@ -4,7 +4,7 @@ import fs from "fs";
 
 export const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadDir = "uploads/";
+    const uploadDir = path.join(__dirname, "uploads/");
 
     fs.access(uploadDir, (err) => {
       if (err && err.code === "ENOENT") {
